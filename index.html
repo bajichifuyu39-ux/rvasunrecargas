@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rv.asun.recargas | Tienda Oficial</title>
+    <style>
+        :root {
+            --bg-color: #070913;
+            --card-bg: #101526;
+            --card-border: #1e2640;
+            --accent-purple: #8b5cf6;
+            --accent-blue: #3b82f6;
+            --neon-glow: rgba(139, 92, 246, 0.4);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--bg-color);
+            padding: 15px;
+            position: relative;
+            padding-bottom: 90px;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #1e1b4b 0%, #0c1021 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            position: relative;
+        }
+
+        .app-header h1 {
+            font-size: 1.5rem;
+            color: #d8b4fe;
+            margin-bottom: 5px;
+        }
+
+        .app-header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .badge-colombia {
+            display: inline-block;
+            background: #171f38;
+            border: 1px solid #2d3748;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-top: 10px;
+            color: #38bdf8;
+        }
+
+        .admin-toggle-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid #7c3aed;
+            color: #d8b4fe;
+            font-size: 0.7rem;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .notification-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            display: none;
+            box-shadow: 0 0 8px #ef4444;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 14px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .game-card:hover, .game-card.selected {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 15px var(--neon-glow);
+            transform: translateY(-2px);
+        }
+
+        .game-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .game-card h3 {
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .game-card p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .catalog-section {
+            display: none;
+            margin-bottom: 25px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .catalog-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .package-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 15px;
+            position: relative;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .package-card:hover {
+            border-color: #38bdf8;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+
+        .package-card h4 {
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            color: #f8fafc;
+        }
+
+        .package-card .price {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        .checkout-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            background: #070913;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 10px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .pay-methods {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .pay-btn {
+            flex: 1;
+            background: #070913;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 10px;
+            color: white;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .pay-btn.active {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .submit-order-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--neon-glow);
+        }
+
+        #checkout-screen, #admin-screen {
+            display: none;
+            background: linear-gradient(180deg, #131932 0%, #0a0e1c 100%);
+            border: 1px solid #7c3aed;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 0 25px rgba(124, 58, 237, 0.2);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .back-store-btn {
+            background: transparent;
+            border: none;
+            color: #38bdf8;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .status-steps-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #070913;
+            border: 1px solid #232d50;
+            border-radius: 12px;
+            padding: 15px 10px;
+            margin-bottom: 15px;
+        }
+
+        .step-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            background: #1e2640;
+            border: 2px solid #3b82f6;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin: 0 auto 5px auto;
+        }
+
+        .step-circle.active {
+            background: #7c3aed;
+            border-color: #c084fc;
+            box-shadow: 0 0 10px rgba(192, 132, 252, 0.5);
+        }
+
+        .step-text {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        .notice-box {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 0.78rem;
+            color: #e9d5ff;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .payment-info-card {
+            background: #070913;
+            border: 1px solid #232d50;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .copy-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #101526;
+            border: 1px solid #1e2640;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 5px;
+        }
+
+        .copy-btn {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .tutorial-box {
+            background: #070913;
+            border: 1px solid #232d50;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        .tutorial-box b {
+            color: #38bdf8;
+        }
+
+        .order-card-admin {
+            background: #070913;
+            border: 1px solid #232d50;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .admin-controls {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .admin-action-btn {
+            flex: 1;
+            background: #1e2640;
+            border: 1px solid #3b82f6;
+            color: white;
+            font-size: 0.7rem;
+            padding: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .admin-action-btn:hover {
+            background: #7c3aed;
+        }
+
+        /* Chat en vivo flotante y modal */
+        .chat-bubble-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+            color: white;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px var(--neon-glow);
+            cursor: pointer;
+            z-index: 999;
+            border: 2px solid #c084fc;
+        }
+
+        .chat-modal {
+            display: none;
+            position: fixed;
+            bottom: 85px;
+            right: 20px;
+            width: 320px;
+            max-width: 90vw;
+            background: #101526;
+            border: 1px solid #7c3aed;
+            border-radius: 16px;
+            padding: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.8);
+            z-index: 1000;
+        }
+
+        .chat-messages-box {
+            height: 200px;
+            background: #070913;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chat-msg {
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            max-width: 85%;
+            line-height: 1.3;
+        }
+
+        .chat-msg.client {
+            background: #1e2640;
+            color: white;
+            align-self: flex-start;
+        }
+
+        .chat-msg.admin {
+            background: #7c3aed;
+            color: white;
+            align-self: flex-end;
+        }
+    </style>
+</head>
+<body onload="initApp()">
+
+    <div class="main-container">
+        <div class="app-header">
+            <button class="admin-toggle-btn" onclick="openAdminPanel()">
+                📦 Ver Pedidos <span class="notification-dot" id="red-dot"></span>
+            </button>
+            <h1>🎮 rv.asun.recargas 💎</h1>
+            <p>Tus recargas al instante y seguras</p>
+            <div class="badge-colombia">🇨🇴 Colombia (Nequi / Bancolombia)</div>
+        </div>
+
+        <!-- Tienda Principal -->
+        <div id="store-main-view">
+            <div class="section-title">⚡ 1. Selecciona el Juego</div>
+            <div class="games-grid">
+                <div class="game-card selected" onclick="selectGame('freefire', this)">
+                    <div class="game-icon">🔥</div>
+                    <h3>Free Fire LATAM</h3>
+                    <p>Diamantes</p>
+                </div>
+                <div class="game-card" onclick="selectGame('bloodstrike', this)">
+                    <div class="game-icon">⚡</div>
+                    <h3>Blood Strike</h3>
+                    <p>Oro</p>
+                </div>
+                <div class="game-card" onclick="selectGame('mobilelegends', this)">
+                    <div class="game-icon">🛡️</div>
+                    <h3>Mobile Legends</h3>
+                    <p>Diamantes</p>
+                </div>
+                <div class="game-card" onclick="selectGame('arenabreakout', this)">
+                    <div class="game-icon">🎯</div>
+                    <h3>Arena Breakout</h3>
+                    <p>Bonds</p>
+                </div>
+                <div class="game-card" onclick="selectGame('pubg', this)">
+                    <div class="game-icon">🎖️</div>
+                    <h3>PUBG Mobile</h3>
+                    <p>UC</p>
+                </div>
+            </div>
+
+            <!-- Catálogos -->
+            <div id="catalog-freefire" class="catalog-section active">
+                <div class="section-title">💎 2. Paquetes de Free Fire LATAM</div>
+                <div class="packages-grid">
+                    <div class="package-card" onclick="selectPackage('100 (+10) Diamantes FF', '3.500')"><span class="discount-badge">+10 Bonus</span><h4>100 (+10) Diamantes</h4><p class="price">$ 3.500</p></div>
+                    <div class="package-card" onclick="selectPackage('300 (+41) Diamantes FF', '10.800')"><span class="discount-badge">+41 Bonus</span><h4>300 (+41) Diamantes</h4><p class="price">$ 10.800</p></div>
+                    <div class="package-card" onclick="selectPackage('500 (+72) Diamantes FF', '18.000')"><span class="discount-badge">+72 Bonus</span><h4>500 (+72) Diamantes</h4><p class="price">$ 18.000</p></div>
+                    <div class="package-card" onclick="selectPackage('1000 (+166) Diamantes FF', '32.000')"><span class="discount-badge">+166 Bonus</span><h4>1000 (+166) Diamantes</h4><p class="price">$ 32.000</p></div>
+                    <div class="package-card" onclick="selectPackage('2000 (+398) Diamantes FF', '65.000')"><span class="discount-badge">+398 Bonus</span><h4>2000 (+398) Diamantes</h4><p class="price">$ 65.000</p></div>
+                    <div class="package-card" onclick="selectPackage('6000 (+160) Diamantes FF', '168.000')"><span class="discount-badge">+160 Bonus</span><h4>6000 (+160) Diamantes</h4><p class="price">$ 168.000</p></div>
+                </div>
+            </div>
+
+            <div id="catalog-bloodstrike" class="catalog-section">
+                <div class="section-title">🪙 2. Paquetes de Blood Strike (Oro)</div>
+                <div class="packages-grid">
+                    <div class="package-card" onclick="selectPackage('105 Oro Blood Strike', '3.000')"><span class="discount-badge">-9%</span><h4>105 Oro</h4><p class="price">$ 3.000</p></div>
+                    <div class="package-card" onclick="selectPackage('320 Oro Blood Strike', '9.000')"><span class="discount-badge">-7%</span><h4>320 Oro</h4><p class="price">$ 9.000</p></div>
+                    <div class="package-card" onclick="selectPackage('540 Oro Blood Strike', '13.800')"><span class="discount-badge">-9%</span><h4>540 Oro</h4><p class="price">$ 13.800</p></div>
+                    <div class="package-card" onclick="selectPackage('1100 Oro Blood Strike', '28.000')"><span class="discount-badge">-8%</span><h4>1100 Oro</h4><p class="price">$ 28.000</p></div>
+                    <div class="package-card" onclick="selectPackage('2260 Oro Blood Strike', '54.000')"><span class="discount-badge">-8%</span><h4>2260 Oro</h4><p class="price">$ 54.000</p></div>
+                    <div class="package-card" onclick="selectPackage('5800 Oro Blood Strike', '150.000')"><span class="discount-badge">-8%</span><h4>5800 Oro</h4><p class="price">$ 150.000</p></div>
+                </div>
+            </div>
+
+            <div id="catalog-mobilelegends" class="catalog-section">
+                <div class="section-title">🛡️ 2. Paquetes de Mobile Legends</div>
+                <div class="packages-grid">
+                    <div class="package-card" onclick="selectPackage('172 Diamantes ML', '9.000')"><span class="discount-badge">-14%</span><h4>172 Diamantes</h4><p class="price">$ 9.000</p></div>
+                    <div class="package-card" onclick="selectPackage('257 Diamantes ML', '12.800')"><span class="discount-badge">-10%</span><h4>257 Diamantes</h4><p class="price">$ 12.800</p></div>
+                    <div class="package-card" onclick="selectPackage('2195 Diamantes ML', '115.000')"><span class="discount-badge">-13%</span><h4>2195 Diamantes</h4><p class="price">$ 115.000</p></div>
+                    <div class="package-card" onclick="selectPackage('3688 Diamantes ML', '170.000')"><span class="discount-badge">-17%</span><h4>3688 Diamantes</h4><p class="price">$ 170.000</p></div>
+                    <div class="package-card" onclick="selectPackage('5532 Diamantes ML', '260.000')"><span class="discount-badge">-13%</span><h4>5532 Diamantes</h4><p class="price">$ 260.000</p></div>
+                    <div class="package-card" onclick="selectPackage('9288 Diamantes ML', '450.000')"><span class="discount-badge">-13%</span><h4>9288 Diamantes</h4><p class="price">$ 450.000</p></div>
+                </div>
+            </div>
+
+            <div id="catalog-arenabreakout" class="catalog-section">
+                <div class="section-title">🎯 2. Paquetes de Arena Breakout (Bonds)</div>
+                <div class="packages-grid">
+                    <div class="package-card" onclick="selectPackage('66 Bonds AB', '2.829')"><span class="discount-badge">-11%</span><h4>66 Bonds</h4><p class="price">$ 2.829</p></div>
+                    <div class="package-card" onclick="selectPackage('335 Bonds AB', '15.000')"><span class="discount-badge">-10%</span><h4>335 Bonds</h4><p class="price">$ 15.000</p></div>
+                    <div class="package-card" onclick="selectPackage('675 Bonds AB', '28.300')"><span class="discount-badge">-10%</span><h4>675 Bonds</h4><p class="price">$ 28.300</p></div>
+                    <div class="package-card" onclick="selectPackage('1690 Bonds AB', '70.000')"><span class="discount-badge">-10%</span><h4>1690 Bonds</h4><p class="price">$ 70.000</p></div>
+                    <div class="package-card" onclick="selectPackage('3400 Bonds AB', '145.000')"><span class="discount-badge">-10%</span><h4>3400 Bonds</h4><p class="price">$ 145.000</p></div>
+                </div>
+            </div>
+
+            <div id="catalog-pubg" class="catalog-section">
+                <div class="section-title">🎖️ 2. Paquetes de PUBG Mobile (UC)</div>
+                <div class="packages-grid">
+                    <div class="package-card" onclick="selectPackage('60 UC PUBG', '3.300')"><span class="discount-badge">-11%</span><h4>60 UC</h4><p class="price">$ 3.300</p></div>
+                    <div class="package-card" onclick="selectPackage('325 UC PUBG', '16.100')"><span class="discount-badge">-4%</span><h4>325 UC</h4><p class="price">$ 16.100</p></div>
+                    <div class="package-card" onclick="selectPackage('660 UC PUBG', '32.000')"><span class="discount-badge">-7%</span><h4>660 UC</h4><p class="price">$ 32.000</p></div>
+                    <div class="package-card" onclick="selectPackage('1800 UC PUBG', '79.000')"><span class="discount-badge">-4%</span><h4>1800 UC</h4><p class="price">$ 79.000</p></div>
+                    <div class="package-card" onclick="selectPackage('3850 UC PUBG', '158.000')"><span class="discount-badge">-5%</span><h4>3850 UC</h4><p class="price">$ 158.000</p></div>
+                    <div class="package-card" onclick="selectPackage('8100 UC PUBG', '318.000')"><span class="discount-badge">-7%</span><h4>8100 UC</h4><p class="price">$ 318.000</p></div>
+                </div>
+            </div>
+
+            <!-- 3. Datos y Pago -->
+            <div class="checkout-box" id="order-form-box">
+                <div class="section-title" style="font-size: 0.9rem; margin-bottom: 10px;">💖 3. Datos y Método de Pago</div>
+                <div class="form-group">
+                    <label>Ingresa tu ID de Jugador:</label>
+                    <input type="text" id="playerId" placeholder="Ej: 123456789">
+                </div>
+
+                <div class="form-group">
+                    <label>Selecciona tu Método de Pago:</label>
+                    <div class="pay-methods">
+                        <div class="pay-btn active" id="btn-nequi" onclick="setPaymentMethod('Nequi')">Nequi</div>
+                        <div class="pay-btn" id="btn-bancolombia" onclick="setPaymentMethod('Bancolombia')">Bancolombia</div>
+                    </div>
+                </div>
+
+                <button class="submit-order-btn" onclick="goToCheckout()">Recargar Ahora 🚀</button>
+            </div>
+        </div>
+
+        <!-- Pantalla de Pasarela -->
+        <div id="checkout-screen">
+            <button class="back-store-btn" onclick="goBackToStore()">← Volver al catálogo</button>
+            
+            <div class="status-steps-container">
+                <div class="step-item">
+                    <div class="step-circle active" id="circle-1">💖</div>
+                    <div class="step-text">Pedido</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle" id="circle-2">2</div>
+                    <div class="step-text">Revisando</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle" id="circle-3">3</div>
+                    <div class="step-text">Recargando</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle" id="circle-4">4</div>
+                    <div class="step-text">Enviado</div>
+                </div>
+            </div>
+
+            <div class="checkout-header" style="background:#070913; padding:12px; border-radius:10px; margin-bottom:12px; border:1px solid #1e2640;">
+                <h4 style="color: #d8b4fe; font-size: 0.9rem;" id="summary-package">📦 Paquete seleccionado</h4>
+                <p style="font-size: 0.8rem; color: #94a3b8;" id="summary-id">ID: 123456789</p>
+                <p style="font-size: 0.75rem; color: #38bdf8; margin-top: 4px;" id="live-status-text">Estado actual: 💖 Pendiente de pago</p>
+            </div>
+
+            <div class="payment-info-card">
+                <h4 style="color: #38bdf8; font-size: 0.85rem; margin-bottom: 8px;" id="payment-title">📱 Datos para pagar</h4>
+                <p style="font-size: 0.78rem; color: var(--text-muted);">Número de cuenta (Ahorros):</p>
+                <div class="copy-row">
+                    <span id="account-number" style="font-weight: bold; font-size: 0.95rem;">48176374686</span>
+                    <button class="copy-btn" onclick="copyAccountNumber()">Copiar</button>
+                </div>
+            </div>
+
+            <div class="tutorial-box">
+                <b>📖 Tutorial rápido para pagar:</b><br>
+                <b>Paso 1:</b> Abre tu aplicación de Nequi.<br>
+                <b>Paso 2:</b> Dale donde dice <b>"Envía"</b>.<br>
+                <b>Paso 3:</b> Selecciona o busca <b>"Bancolombia"</b>.<br>
+                <b>Paso 4:</b> Ingresa el número de cuenta indicado arriba.<br>
+                <b>Paso 5:</b> Selecciona tipo de cuenta <b>"Ahorros"</b>.<br>
+                <b>Paso 6:</b> Ingresa el valor exacto y envías el dinero.
+            </div>
+
+            <div class="notice-box">
+                ⚠️ <b>Recomendación importante:</b> Debes enviar el <b>dinero exacto</b> del paquete seleccionado (sin faltar ni un peso). Si envías un monto incorrecto, los diamantes no podrán llegar a tu cuenta. No escribas nada en el concepto.
+            </div>
+
+            <div class="form-group">
+                <label>Nombre y apellido (como sale en tu cuenta bancaria):</label>
+                <input type="text" id="clientName" placeholder="Ej: Maria Perez">
+            </div>
+
+            <div class="form-group">
+                <label>Sube tu Comprobante de Pago:</label>
+                <input type="file" id="receiptFile" accept="image/*,.pdf" style="background:#070913; border:1px solid var(--card-border); padding:8px; width:100%; color:white; border-radius:8px;">
+            </div>
+
+            <button class="submit-order-btn" onclick="submitFinalOrder()">Enviar Comprobante 🚀</button>
+        </div>
+
+        <!-- Panel de Control de Creadora con Chat en Vivo -->
+        <div id="admin-screen">
+            <button class="back-store-btn" onclick="closeAdminPanel()">← Volver a la tienda</button>
+            <div class="section-title">📦 Panel de Control y Chat en Vivo</div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 15px;">Aquí ves los pedidos de tus clientes y puedes responderles directamente a su chat en vivo.</p>
+            
+            <div id="admin-orders-list">
+                <!-- Pedidos y chats -->
+            </div>
+            
+            <button class="submit-order-btn" style="background:#ef4444; margin-top:15px;" onclick="clearOrders()">Limpiar Historial</button>
+        </div>
+    </div>
+
+    <!-- Burbuja flotante de chat en vivo para el cliente -->
+    <div class="chat-bubble-btn" onclick="toggleChatModal()">💬</div>
+    <div class="chat-modal" id="chatModal">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <h4 style="color:#d8b4fe; font-size:0.85rem;">💬 Chat en Vivo con la Creadora</h4>
+            <button onclick="toggleChatModal()" style="background:transparent; border:none; color:white; cursor:pointer; font-size:1rem;">✕</button>
+        </div>
+        <p style="font-size:0.7rem; color:#94a3b8; margin-bottom:6px;">¿Pusiste el ID mal o tienes dudas? Háblanos aquí:</p>
+        
+        <div class="chat-messages-box" id="clientChatMessages">
+            <div class="chat-msg admin">¡Hola! 💖 Escribe aquí tu duda, tu ID correcto o cualquier problema con tu recarga y te responderemos al instante.</div>
+        </div>
+
+        <div style="display:flex; gap:6px;">
+            <input type="text" id="clientChatInput" placeholder="Escribe tu mensaje..." style="flex:1; background:#070913; border:1px solid var(--card-border); border-radius:8px; padding:8px; color:white; font-size:0.8rem;" onkeypress="handleClientKey(event)">
+            <button onclick="sendClientChatMessage()" style="background:#7c3aed; color:white; border:none; border-radius:8px; padding:0 12px; font-weight:bold; cursor:pointer;">➤</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedItemName = "100 (+10) Diamantes Free Fire";
+        let selectedItemPrice = "3.500";
+        let chosenPayment = "Nequi";
+        let currentActiveOrderKey = null;
+
+        function initApp() {
+            checkPendingOrdersDot();
+            loadClientChatHistory();
+        }
+
+        function selectGame(gameId, element) {
+            document.querySelectorAll('.game-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+
+            document.querySelectorAll('.catalog-section').forEach(section => section.classList.remove('active'));
+            const activeCatalog = document.getElementById('catalog-' + gameId);
+            if (activeCatalog) {
+                activeCatalog.classList.add('active');
+            }
+        }
+
+        function selectPackage(name, price) {
+            selectedItemName = name;
+            selectedItemPrice = price;
+            alert('Has seleccionado: ' + name + ' ($ ' + selectedItemPrice + ' COP). ¡Completa tu ID abajo!');
+        }
+
+        function setPaymentMethod(method) {
+            chosenPayment = method;
+            document.getElementById('btn-nequi').classList.remove('active');
+            document.getElementById('btn-bancolombia').classList.remove('active');
+
+            if (method === 'Nequi') {
+                document.getElementById('btn-nequi').classList.add('active');
+            } else {
+                document.getElementById('btn-bancolombia').classList.add('active');
+            }
+        }
+
+        function goToCheckout() {
+            const id = document.getElementById('playerId').value;
+            if(!id) {
+                alert('Por favor ingresa tu ID de jugador antes de continuar.');
+                return;
+            }
+
+            document.getElementById('order-form-box').style.display = 'none';
+            document.querySelectorAll('.games-grid, .catalog-section, .section-title').forEach(el => el.style.display = 'none');
+            document.getElementById('checkout-screen').style.display = 'block';
+
+            document.getElementById('summary-package').innerText = '🔥 ' + selectedItemName + ' - $ ' + selectedItemPrice + ' COP';
+            document.getElementById('summary-id').innerText = 'ID de Jugador: ' + id;
+            updateCheckoutUI(1);
+
+            document.getElementById('payment-title').innerText = '📱 Datos para pagar (' + chosenPayment + ' a Bancolombia Ahorros)';
+            document.getElementById('account-number').innerText = '48176374686';
+        }
+
+        function copyAccountNumber() {
+            const accNum = document.getElementById('account-number').innerText;
+            navigator.clipboard.writeText(accNum);
+            alert('¡Número ' + accNum + ' copiado al portapapeles! 📋✨');
+        }
+
+        function toggleChatModal() {
+            const modal = document.getElementById('chatModal');
+            if (modal.style.display === 'block') {
+                modal.style.display = 'none';
+            } else {
+                modal.style.display = 'block';
+                const box = document.getElementById('clientChatMessages');
+                box.scrollTop = box.scrollHeight;
+            }
+        }
+
+        function handleClientKey(e) {
+            if (e.key === 'Enter') {
+                sendClientChatMessage();
+            }
+        }
+
+        function sendClientChatMessage() {
+            const input = document.getElementById('clientChatInput');
+            const txt = input.value.trim();
+            if(!txt) return;
+
+            const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            let chatHistory = JSON.parse(localStorage.getItem('asun_chat') || '[]');
+            
+            chatHistory.push({
+                sender: 'client',
+                text: txt,
+                time: timeNow
+            });
+
+            localStorage.setItem('asun_chat', JSON.stringify(chatHistory));
+            input.value = '';
+            loadClientChatHistory();
+            checkPendingOrdersDot();
+        }
+
+        function loadClientChatHistory() {
+            const box = document.getElementById('clientChatMessages');
+            let chatHistory = JSON.parse(localStorage.getItem('asun_chat') || '[]');
+            
+            if (chatHistory.length === 0) {
+                box.innerHTML = '<div class="chat-msg admin">¡Hola! 💖 Escribe aquí tu duda, tu ID correcto o cualquier problema con tu recarga y te responderemos al instante.</div>';
+                return;
+            }
+
+            let html = '';
+            chatHistory.forEach(msg => {
+                html += `<div class="chat-msg ${msg.sender}">${msg.text}</div>`;
+            });
+            box.innerHTML = html;
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function sendAdminReply(index) {
+            const input = document.getElementById('admin_reply_' + index);
+            const txt = input.value.trim();
+            if(!txt) return;
+
+            const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            let chatHistory = JSON.parse(localStorage.getItem('asun_chat') || '[]');
+            
+            chatHistory.push({
+                sender: 'admin',
+                text: txt,
+                time: timeNow
+            });
+
+            localStorage.setItem('asun_chat', JSON.stringify(chatHistory));
+            input.value = '';
+            renderOrders();
+            checkPendingOrdersDot();
+        }
+
+        function submitFinalOrder() {
+            const id = document.getElementById('playerId').value;
+            const clientName = document.getElementById('clientName').value || "Cliente Anónimo";
+            const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const orderKey = 'ord_' + Date.now();
+
+            const newOrder = {
+                key: orderKey,
+                type: 'order',
+                id: id,
+                name: clientName,
+                item: selectedItemName,
+                price: selectedItemPrice,
+                method: chosenPayment,
+                time: timeNow,
+                step: 1
+            };
+
+            let orders = JSON.parse(localStorage.getItem('asun_orders') || '[]');
+            orders.unshift(newOrder);
+            localStorage.setItem('asun_orders', JSON.stringify(orders));
+
+            currentActiveOrderKey = orderKey;
+            alert('¡Comprobante enviado con éxito! 💖 Tu pedido fue registrado.');
+            document.getElementById('clientName').value = '';
+            checkPendingOrdersDot();
+        }
+
+        function updateCheckoutUI(step) {
+            const c1 = document.getElementById('circle-1');
+            const c2 = document.getElementById('circle-2');
+            const c3 = document.getElementById('circle-3');
+            const c4 = document.getElementById('circle-4');
+            const statusText = document.getElementById('live-status-text');
+
+            c1.className = "step-circle active";
+            c2.className = "step-circle";
+            c3.className = "step-circle";
+            c4.className = "step-circle";
+
+            if(step >= 2) { c2.className = "step-circle active"; c2.innerText = "💖"; } else { c2.innerText = "2"; }
+            if(step >= 3) { c3.className = "step-circle active"; c3.innerText = "💖"; } else { c3.innerText = "3"; }
+            if(step >= 4) { c4.className = "step-circle active"; c4.innerText = "💖"; } else { c4.innerText = "4"; }
+
+            const texts = ["", "Estado: 💖 Pedido recibido", "Estado: 👀 Revisando pago", "Estado: ⚡ Recargando diamantes", "Estado: ✨ ¡Diamantes enviados con éxito!"];
+            statusText.innerText = texts[step] || "";
+        }
+
+        function setOrderStep(orderKey, newStep) {
+            let orders = JSON.parse(localStorage.getItem('asun_orders') || '[]');
+            orders = orders.map(ord => {
+                if(ord.key === orderKey) {
+                    ord.step = newStep;
+                }
+                return ord;
+            });
+            localStorage.setItem('asun_orders', JSON.stringify(orders));
+            renderOrders();
+            checkPendingOrdersDot();
+
+            if(currentActiveOrderKey === orderKey) {
+                updateCheckoutUI(newStep);
+            }
+        }
+
+        function deleteOrder(itemKey) {
+            let orders = JSON.parse(localStorage.getItem('asun_orders') || '[]');
+            orders = orders.filter(ord => ord.key !== itemKey);
+            localStorage.setItem('asun_orders', JSON.stringify(orders));
+            renderOrders();
+            checkPendingOrdersDot();
+        }
+
+        function checkPendingOrdersDot() {
+            const orders = JSON.parse(localStorage.getItem('asun_orders') || '[]');
+            const chatHistory = JSON.parse(localStorage.getItem('asun_chat') || '[]');
+            
+            const pendientesOrders = orders.filter(ord => ord.step < 4).length;
+            const unreadChat = chatHistory.length > 0;
+            const redDot = document.getElementById('red-dot');
+
+            if (pendientesOrders > 0 || unreadChat) {
+                redDot.style.display = 'block';
+            } else {
+                redDot.style.display = 'none';
+            }
+        }
+
+        function openAdminPanel() {
+            let password = prompt("Ingresa tu contraseña:");
+            if (password === null) return;
+
+            if (password === "Doll code") {
+                document.getElementById('store-main-view').style.display = 'none';
+                document.getElementById('checkout-screen').style.display = 'none';
+                document.getElementById('admin-screen').style.display = 'block';
+                renderOrders();
+            } else {
+                alert("❌ Contraseña incorrecta.");
+            }
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('admin-screen').style.display = 'none';
+            document.getElementById('store-main-view').style.display = 'block';
+            document.querySelectorAll('.games-grid, .section-title').forEach(el => el.style.display = 'grid');
+            document.querySelectorAll('.catalog-section').forEach(el => el.classList.remove('active'));
+            document.getElementById('catalog-freefire').classList.add('active');
+            document.getElementById('order-form-box').style.display = 'block';
+            checkPendingOrdersDot();
+        }
+
+        function renderOrders() {
+            const listContainer = document.getElementById('admin-orders-list');
+            const orders = JSON.parse(localStorage.getItem('asun_orders') || '[]');
+            const chatHistory = JSON.parse(localStorage.getItem('asun_chat') || '[]');
+
+            let html = '';
+
+            // Sección de Chat en Vivo con clientes
+            html += `<div style="background:#151b36; border:1px solid #7c3aed; border-radius:12px; padding:12px; margin-bottom:15px;">`;
+            html += `<h4 style="color:#d8b4fe; font-size:0.9rem; margin-bottom:8px;">💬 Chat en Vivo con Clientes</h4>`;
+            
+            if (chatHistory.length === 0) {
+                html += `<p style="font-size:0.75rem; color:var(--text-muted);">No hay mensajes en el chat en vivo.</p>`;
+            } else {
+                html += `<div style="max-height:160px; overflow-y:auto; background:#070913; padding:8px; border-radius:8px; margin-bottom:8px; display:flex; flex-direction:column; gap:6px;">`;
+                chatHistory.forEach((msg, idx) => {
+                    const senderLabel = msg.sender === 'client' ? '👤 Cliente' : '👑 Tú (Creadora)';
+                    const color = msg.sender === 'client' ? '#38bdf8' : '#d8b4fe';
+                    html += `<div style="font-size:0.75rem; background:#101526; padding:6px; border-radius:6px;"><b style="color:${color};">${senderLabel} [${msg.time}]:</b> <span style="color:white;">${msg.text}</span></div>`;
+                });
+                html += `</div>`;
+            }
+
+            html += `
+                <div style="display:flex; gap:6px; margin-top:8px;">
+                    <input type="text" id="admin_reply_0" placeholder="Escribe tu respuesta al cliente..." style="flex:1; background:#070913; border:1px solid var(--card-border); border-radius:8px; padding:8px; color:white; font-size:0.8rem;">
+                    <button onclick="sendAdminReply(0)" style="background:#7c3aed; color:white; border:none; border-radius:8px; padding:0 12px; font-weight:bold; cursor:pointer; font-size:0.8rem;">Responder</button>
+                </div>
+            `;
+            html += `</div>`;
+
+            // Sección de Pedidos
+            html += `<h4 style="color:#38bdf8; font-size:0.9rem; margin-bottom:8px;">📦 Pedidos Activos (${orders.length})</h4>`;
+
+            if (orders.length === 0) {
+                html += '<p style="color: var(--text-muted); text-align: center; font-size: 0.8rem; padding: 15px;">No hay pedidos activos. ¡A facturar se dijo! 🚀</p>';
+            } else {
+                orders.forEach((item) => {
+                    const statusNames = ["", "Pendiente", "Revisando Pago", "Recargando", "Diamantes Enviados"];
+                    html += `
+                        <div class="order-card-admin">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                                <span style="color:#d8b4fe; font-weight:bold; font-size:0.85rem;">📦 ${item.item}</span>
+                                <span style="color:#38bdf8; font-size:0.8rem;">$ ${item.price} COP</span>
+                            </div>
+                            <p style="font-size:0.75rem; color:var(--text-muted);">👤 Titular: <b>${item.name}</b></p>
+                            <p style="font-size:0.75rem; color:var(--text-muted);">🎮 ID: <b style="color:white;">${item.id}</b> | 💳 ${item.method}</p>
+                            <p style="font-size:0.75rem; color:#fde047; margin-top:4px;">Estado actual: <b>${statusNames[item.step]}</b></p>
+                            
+                            <div class="admin-controls">
+                                <button class="admin-action-btn" onclick="setOrderStep('${item.key}', 2)">👀 Revisando</button>
+                                <button class="admin-action-btn" onclick="setOrderStep('${item.key}', 3)">⚡ Recargando</button>
+                                <button class="admin-action-btn" style="background:#7c3aed;" onclick="setOrderStep('${item.key}', 4)">✨ Enviados</button>
+                                <button class="admin-action-btn" style="background:#ef4444;" onclick="deleteOrder('${item.key}')">🗑️ Borrar</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            listContainer.innerHTML = html;
+        }
+
+        function clearOrders() {
+            if(confirm('¿Seguro que quieres limpiar todo el historial de pedidos y chat?')) {
+                localStorage.removeItem('asun_orders');
+                localStorage.removeItem('asun_chat');
+                renderOrders();
+                checkPendingOrdersDot();
+                loadClientChatHistory();
+            }
+        }
+
+        function goBackToStore() {
+            document.getElementById('checkout-screen').style.display = 'none';
+            document.getElementById('store-main-view').style.display = 'block';
+            document.querySelectorAll('.games-grid, .section-title').forEach(el => el.style.display = 'grid');
+            document.querySelectorAll('.catalog-section').forEach(el => el.classList.remove('active'));
+            document.getElementById('catalog-freefire').classList.add('active');
+            document.getElementById('order-form-box').style.display = 'block';
+            checkPendingOrdersDot();
+        }
+    </script>
+</body>
+</html>
